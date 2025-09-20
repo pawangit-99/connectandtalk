@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect & Talk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-4">
+
+    <div class="relative bg-gray-900 rounded-3xl shadow-xl max-w-2xl w-full p-8 space-y-8 text-center transition-colors duration-500">
+        <!-- Header Section -->
+        <div>
+            <h1 class="text-4xl font-bold text-lime-400">Connect & Talk</h1>
+            <p class="text-lime-300 mt-2">Meaningful conversations at your fingertips.</p>
+        </div>
+
+        <!-- Conversation Generator -->
+        <div class="space-y-4">
+            <div class="relative">
+                <p class="text-xl font-semibold text-lime-300">Tap for a new topic!</p>
+                <div class="absolute inset-x-0 -bottom-4 flex justify-center">
+                </div>
+            </div>
+
+            <!-- Relationship Selector -->
+            <div class="mt-4">
+                <label for="categorySelect" class="text-lg text-lime-300">Who are you talking to?</label>
+                <select id="categorySelect" class="mt-1 block w-full rounded-full border-gray-600 bg-gray-800 text-lime-100 shadow-sm focus:border-lime-300 focus:ring focus:ring-lime-200 focus:ring-opacity-50 transition-all duration-200 py-2 px-4">
+                    <option value="partner" selected>My Partner</option>
+                    <option value="friend">My Friend</option>
+                    <option value="family">My Family</option>
+                    <option value="justmet">Someone I Just Met</option>
+                </select>
+            </div>
+
+            <div id="topicDisplay" class="bg-gray-800/50 text-lime-400 text-2xl md:text-3xl font-bold p-8 rounded-2xl shadow-inner min-h-[150px] flex items-center justify-center transition-all duration-300 transform scale-100">
+                <span id="topicText">What's a dream you have for our future together?</span>
+            </div>
+
+            <button id="nextTopicBtn" class="w-full py-4 px-6 bg-gradient-to-r from-lime-500 to-lime-600 text-gray-900 font-bold rounded-2xl shadow-lg hover:from-lime-600 hover:to-lime-700 transition-all duration-300 transform hover:scale-105 active:scale-95">
+                Next Topic
+            </button>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="text-left mt-12 space-y-4">
+            <h2 class="text-2xl font-bold text-lime-400">Tips for Great Conversations</h2>
+            <ul class="list-none space-y-2 text-lime-300">
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">1.</span>
+                    <span>Listen actively. Give your full attention and ask follow-up questions.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">2.</span>
+                    <span>Share your own thoughts and stories to make it a two-way street.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">3.</span>
+                    <span>Be curious. There's always something new to learn about someone.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const topics = {
+            partner: [
+                "What's a dream you have for our future together?",
+                "What's your favorite memory of us from this year?",
+                "What's a challenge we've faced together that made us stronger?",
+                "What's one thing you've learned about me recently?",
+                "What's the best compliment you've ever received?",
+                "What's a goal you're excited for us to achieve together?",
+                "What is your idea of a perfect date?",
+                "What's a song that reminds you of our relationship?",
+                "What's one thing you appreciate most about our relationship?",
+                "If we could go on an adventure anywhere in the world, where would it be?",
+                "What's something new you've noticed about me lately?",
+                "What's one thing you understand about me now that you didn’t before?",
+                "Has your perception of me changed in any way recently?",
+                "What's something about me that surprised you over time?",
+                "What's something you think has changed about our relationship recently?",
+                "What's one way you feel like we’ve grown closer?",
+                "What have you discovered about how we work well together?",
+                "What's one small thing you’ve appreciated about me lately?",
+                "What's something you’ve realized about how I see the world?",
+                "What's one trait of mine you’ve come to understand better?",
+                "What's something about me that makes more sense to you now?",
+                "What do you think I value most these days?"
+            ],
+            friend: [
+                "What's the funniest thing that has happened to you recently?",
+                "If you could master any skill instantly, what would it be?",
+                "What's a challenge you've overcome that you're proud of?",
+                "What's a fun memory you have from a recent trip or adventure?",
+                "What's a song that brings back a great memory for you?",
+                "What's a happy memory that comes to mind when you think about your childhood?",
+                "Is there a new skill you're curious about or a hobby you'd love to try?",
+                "What's an exciting project or goal you've been focused on?"
+            ],
+            family: [
+                "What's a lesson you learned from your parents or grandparents?",
+                "What's a silly memory you have of me from when we were kids?",
+                "What do you remember about a specific family vacation or holiday?",
+                "What's a favorite family tradition or memory that stands out to you?",
+                "What's a story you've heard about our family's history that you find interesting?",
+                "What's a skill or hobby someone in our family taught you?",
+                "What's a simple moment of togetherness you enjoy most?",
+                "What's one thing you love about our family?"
+            ],
+            justmet: [
+                "What's your favorite way to unwind after a long day?",
+                "What's a TV show or movie you're really into right now?",
+                "What's one thing you're passionate about?",
+                "What's a little thing that made you smile today?",
+                "What's the best piece of advice you've ever received?",
+                "What's a skill you'd love to learn?",
+                "What's something you're grateful for right now?",
+                "What's a place you've visited that felt truly magical?"
+            ]
+        };
+
+        const topicTextElement = document.getElementById('topicText');
+        const nextTopicBtn = document.getElementById('nextTopicBtn');
+        const topicDisplay = document.getElementById('topicDisplay');
+        const categorySelect = document.getElementById('categorySelect');
+        const lastIndexes = {};
+        
+        // Initial setup to get a random topic when the page loads
+        topicTextElement.textContent = getRandomTopic();
+
+        // Function to get a random topic based on category, avoiding repetition
+        function getRandomTopic() {
+            const selectedCategory = categorySelect.value;
+            const categoryTopics = topics[selectedCategory];
+
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * categoryTopics.length);
+            } while (newIndex === lastIndexes[selectedCategory]);
+
+            lastIndexes[selectedCategory] = newIndex;
+            return categoryTopics[newIndex];
+        }
+
+        // Event listener for the topic button
+        nextTopicBtn.addEventListener('click', () => {
+            topicDisplay.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                topicTextElement.textContent = getRandomTopic();
+                topicDisplay.classList.remove('scale-90', 'opacity-0');
+            }, 300);
+        });
+
+        // Event listener for category change
+        categorySelect.addEventListener('change', () => {
+            topicTextElement.textContent = getRandomTopic();
+        });
+    </script>
+</body>
+</html>
