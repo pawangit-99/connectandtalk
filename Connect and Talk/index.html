@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect & Talk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-4">
+
+    <div class="relative bg-gray-900 rounded-3xl shadow-xl max-w-2xl w-full p-8 space-y-8 text-center transition-colors duration-500">
+        <!-- Header Section -->
+        <div>
+            <h1 class="text-4xl font-bold text-lime-400">Connect & Talk</h1>
+            <p class="text-lime-300 mt-2">Meaningful conversations at your fingertips.</p>
+        </div>
+
+        <!-- Conversation Generator -->
+        <div class="space-y-4">
+            <div class="relative">
+                <p class="text-xl font-semibold text-lime-300">Tap for a new topic!</p>
+                <div class="absolute inset-x-0 -bottom-4 flex justify-center">
+                </div>
+            </div>
+
+            <!-- Relationship Selector -->
+            <div class="mt-4">
+                <label for="categorySelect" class="text-lg text-lime-300">Who are you talking to?</label>
+                <select id="categorySelect" class="mt-1 block w-full rounded-full border-gray-600 bg-gray-800 text-lime-100 shadow-sm focus:border-lime-300 focus:ring focus:ring-lime-200 focus:ring-opacity-50 transition-all duration-200 py-2 px-4">
+                    <option value="partner" selected>My Partner</option>
+                    <option value="friend">My Friend</option>
+                    <option value="family">My Family</option>
+                    <option value="justmet">Someone I Just Met</option>
+                </select>
+            </div>
+
+            <div id="topicDisplay" class="bg-gray-800/50 text-lime-400 text-2xl md:text-3xl font-bold p-8 rounded-2xl shadow-inner min-h-[150px] flex items-center justify-center transition-all duration-300 transform scale-100">
+                <span id="topicText">What's a dream you have for our future together?</span>
+            </div>
+            
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <button id="nextTopicBtn" class="flex-1 py-4 px-6 bg-gradient-to-r from-lime-500 to-lime-600 text-gray-900 font-bold rounded-2xl shadow-lg hover:from-lime-600 hover:to-lime-700 transition-all duration-300 transform hover:scale-105 active:scale-95">
+                    Next Topic
+                </button>
+                <button id="generateBtn" class="flex-1 py-4 px-6 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold rounded-2xl shadow-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 active:scale-95">
+                    Generate with AI ✨
+                </button>
+                <button id="ttsBtn" class="py-4 px-6 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold rounded-2xl shadow-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-300 transform hover:scale-105 active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 inline-block align-middle">
+                        <path d="M11.5 6.5A.5.5 0 0112 6h4a.5.5 0 01.5.5v11a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-11zM7 8a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v7a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5V8zM3 11a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-1z"></path>
+                    </svg>
+                    <span class="ml-2 hidden md:inline-block">Listen 🔊</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="text-left mt-12 space-y-4">
+            <h2 class="text-2xl font-bold text-lime-400">Tips for Great Conversations</h2>
+            <ul class="list-none space-y-2 text-lime-300">
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">1.</span>
+                    <span><strong>Use AI for better results.</strong></span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">2.</span>
+                    <span>Listen actively. Give your full attention and ask follow-up questions.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">3.</span>
+                    <span>Share your own thoughts and stories to make it a two-way street.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">4.</span>
+                    <span>Ask open-ended questions to encourage more than a 'yes' or 'no' answer.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-lime-500 text-xl font-bold">5.</span>
+                    <span>Be curious. There's always something new to learn about someone.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Static topics
+        const topics = {
+            partner: [
+                "What's a dream you have for our future together?",
+                "What's your favorite memory of us from this year?",
+                "What's a challenge we've faced together that made us stronger?",
+                "What's one thing you've learned about me recently?",
+                "What's the best compliment you've ever received?",
+                "What's a goal you're excited for us to achieve together?",
+                "What is your idea of a perfect date?",
+                "What's a song that reminds you of our relationship?",
+                "What's one thing you appreciate most about our relationship?",
+                "If we could go on an adventure anywhere in the world, where would it be?",
+                "What's something new you've noticed about me lately?",
+                "What's one thing you understand about me now that you didn’t before?",
+                "Has your perception of me changed in any way recently?",
+                "What's something about me that surprised you over time?",
+                "What's something you think has changed about our relationship recently?",
+                "What's one way you feel like we’ve grown closer?",
+                "What have you discovered about how we work well together?",
+                "What's one small thing you’ve appreciated about me lately?",
+                "What's something you’ve realized about how I see the world?",
+                "What's one trait of mine you’ve come to understand better?",
+                "What's something about me that makes more sense to you now?",
+                "What do you think I value most these days?"
+            ],
+            friend: [
+                "What's the funniest thing that has happened to you recently?",
+                "If you could master any skill instantly, what would it be?",
+                "What's a challenge you've overcome that you're proud of?",
+                "What's a fun memory you have from a recent trip or adventure?",
+                "What's a song that brings back a great memory for you?",
+                "What's a happy memory that comes to mind when you think about your childhood?",
+                "Is there a new skill you're curious about or a hobby you'd love to try?",
+                "What's an exciting project or goal you've been focused on?"
+            ],
+            family: [
+                "What's a lesson you learned from your parents or grandparents?",
+                "What's a silly memory you have of me from when we were kids?",
+                "What do you remember about a specific family vacation or holiday?",
+                "What's a favorite family tradition or memory that stands out to you?",
+                "What's a story you've heard about our family's history that you find interesting?",
+                "What's a skill or hobby someone in our family taught you?",
+                "What's a simple moment of togetherness you enjoy most?",
+                "What's one thing you love about our family?"
+            ],
+            justmet: [
+                "What's your favorite way to unwind after a long day?",
+                "What's a TV show or movie you're really into right now?",
+                "What's one thing you're passionate about?",
+                "What's a little thing that made you smile today?",
+                "What's the best piece of advice you've ever received?",
+                "What's a skill you'd love to learn?",
+                "What's something you're grateful for right now?",
+                "What's a place you've visited that felt truly magical?"
+            ]
+        };
+
+        const topicTextElement = document.getElementById('topicText');
+        const nextTopicBtn = document.getElementById('nextTopicBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const ttsBtn = document.getElementById('ttsBtn');
+        const topicDisplay = document.getElementById('topicDisplay');
+        const categorySelect = document.getElementById('categorySelect');
+        const lastIndexes = {};
+        
+        // Initial setup to get a random topic when the page loads
+        topicTextElement.textContent = getRandomTopic();
+        
+        // Function to get a random topic based on category, avoiding repetition
+        function getRandomTopic() {
+            const selectedCategory = categorySelect.value;
+            const categoryTopics = topics[selectedCategory];
+
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * categoryTopics.length);
+            } while (newIndex === lastIndexes[selectedCategory]);
+
+            lastIndexes[selectedCategory] = newIndex;
+            return categoryTopics[newIndex];
+        }
+
+        // --- LLM Powered Features ---
+        async function generateTopicWithAI() {
+            const selectedCategory = categorySelect.value;
+            let persona = "";
+
+            // Determine a persona or context for the LLM based on the category
+            switch (selectedCategory) {
+                case 'partner':
+                    persona = "deep and romantic";
+                    break;
+                case 'friend':
+                    persona = "lighthearted and fun";
+                    break;
+                case 'family':
+                    persona = "nostalgic and meaningful";
+                    break;
+                case 'justmet':
+                    persona = "casual and interesting";
+                    break;
+            }
+
+            // Set loading state
+            const originalText = topicTextElement.textContent;
+            topicDisplay.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                topicTextElement.textContent = "Thinking...";
+                topicDisplay.classList.remove('scale-90', 'opacity-0');
+            }, 300);
+
+            // Construct the payload for the Gemini API
+            const prompt = `Generate a single, friendly, ${persona} conversation starter question that is suitable for talking to a ${selectedCategory}. The question should be a complete sentence and should not include any introductory phrases like 'How about...' or 'Try this...'.`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                tools: [{ "google_search": {} }]
+            };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const newTopic = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (newTopic) {
+                    topicDisplay.classList.add('scale-90', 'opacity-0');
+                    setTimeout(() => {
+                        topicTextElement.textContent = newTopic.replace(/['"]+/g, ''); // Remove quotes
+                        topicDisplay.classList.remove('scale-90', 'opacity-0');
+                    }, 300);
+                } else {
+                    topicTextElement.textContent = "Sorry, couldn't generate a topic. Try again!";
+                }
+            } catch (error) {
+                console.error("Error generating topic:", error);
+                topicTextElement.textContent = "Something went wrong. Please try again.";
+            }
+        }
+        
+        async function speakTopic() {
+            const textToSpeak = topicTextElement.textContent;
+            if (!textToSpeak || textToSpeak === "Thinking...") {
+                return;
+            }
+
+            ttsBtn.disabled = true;
+            ttsBtn.textContent = "Loading Audio...";
+
+            const payload = {
+                contents: [{ parts: [{ text: textToSpeak }] }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Puck" }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`TTS API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const audioPart = result?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+
+                if (audioPart) {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const pcmData = Uint8Array.from(atob(audioPart.data), c => c.charCodeAt(0)).buffer;
+                    const pcm16 = new Int16Array(pcmData);
+
+                    // Create a WAV header
+                    const numChannels = 1;
+                    const sampleRate = 16000;
+                    const bitDepth = 16;
+
+                    const wavBuffer = new ArrayBuffer(44 + pcm16.length * 2);
+                    const view = new DataView(wavBuffer);
+                    
+                    // Write WAV header
+                    function writeString(view, offset, s) {
+                        for (let i = 0; i < s.length; i++) {
+                            view.setUint8(offset + i, s.charCodeAt(i));
+                        }
+                    }
+
+                    writeString(view, 0, 'RIFF'); // RIFF identifier
+                    view.setUint32(4, 36 + pcm16.length * 2, true); // file length - 8
+                    writeString(view, 8, 'WAVE'); // RIFF type
+                    writeString(view, 12, 'fmt '); // format chunk identifier
+                    view.setUint32(16, 16, true); // format chunk length
+                    view.setUint16(20, 1, true); // sample format (1 = PCM)
+                    view.setUint16(22, numChannels, true); // number of channels
+                    view.setUint32(24, sampleRate, true); // sample rate
+                    view.setUint32(28, sampleRate * numChannels * (bitDepth / 8), true); // byte rate
+                    view.setUint16(32, numChannels * (bitDepth / 8), true); // block align
+                    view.setUint16(34, bitDepth, true); // bits per sample
+                    writeString(view, 36, 'data'); // data chunk identifier
+                    view.setUint32(40, pcm16.length * 2, true); // data chunk length
+
+                    let offset = 44;
+                    for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                        view.setInt16(offset, pcm16[i], true);
+                    }
+
+                    const blob = new Blob([view], { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(blob);
+                    
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+
+                    audio.onended = () => {
+                        ttsBtn.disabled = false;
+                        ttsBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 inline-block align-middle"><path d="M11.5 6.5A.5.5 0 0112 6h4a.5.5 0 01.5.5v11a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-11zM7 8a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v7a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5V8zM3 11a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-1z"></path></svg><span class="ml-2 hidden md:inline-block">Listen 🔊</span>';
+                    };
+
+                } else {
+                    console.error("No audio data received.");
+                    topicTextElement.textContent = "Error playing audio.";
+                }
+            } catch (error) {
+                console.error("Error playing audio:", error);
+                topicTextElement.textContent = "Error playing audio.";
+            } finally {
+                if (!audio) {
+                     ttsBtn.disabled = false;
+                     ttsBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 inline-block align-middle"><path d="M11.5 6.5A.5.5 0 0112 6h4a.5.5 0 01.5.5v11a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-11zM7 8a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v7a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5V8zM3 11a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5v-1z"></path></svg><span class="ml-2 hidden md:inline-block">Listen 🔊</span>';
+                }
+            }
+        }
+
+        // Event listener for the topic button
+        nextTopicBtn.addEventListener('click', () => {
+            topicDisplay.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                topicTextElement.textContent = getRandomTopic();
+                topicDisplay.classList.remove('scale-90', 'opacity-0');
+            }, 300);
+        });
+        
+        // Event listener for the AI Generate button
+        generateBtn.addEventListener('click', generateTopicWithAI);
+
+        // Event listener for the TTS button
+        ttsBtn.addEventListener('click', speakTopic);
+
+        // Event listener for category change
+        categorySelect.addEventListener('change', () => {
+            topicTextElement.textContent = getRandomTopic();
+        });
+    </script>
+</body>
+</html>
